@@ -30,6 +30,39 @@ const Customizer = () => {
     stylishShirt: false,
   });
 
+  const [isEditorTabOpen, setIsEditorTabOpen] = useState(false);
+
+  const openEditorTab = (tabName) => {
+    setActiveEditorTab(tabName);
+    setIsEditorTabOpen(true);
+  };
+
+  const closeEditorTab = () => {
+    setActiveEditorTab("");
+    setIsEditorTabOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const editorTabsContainer = document.querySelector(
+        ".editortabs-container"
+      );
+
+      // Check if the click is outside the editorTabsContainer
+      if (editorTabsContainer && !editorTabsContainer.contains(event.target)) {
+        closeEditorTab();
+      }
+    };
+
+    // Add the event listener when the component mounts
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   // show tab content depending on the activeTab
   const generateTabContent = () => {
     switch (activeEditorTab) {
@@ -57,7 +90,7 @@ const Customizer = () => {
     try {
       setGeneratingImg(true);
 
-      const response = await fetch("http://localhost:8080/api/v1/dalle", {
+      const response = await fetch("http://localhost:8080/api/v1/hf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,11 +100,15 @@ const Customizer = () => {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
       const data = await response.json();
 
       handleDecals(type, `data:image/png;base64,${data.photo}`);
     } catch (error) {
-      alert(error);
+      alert(error.message);
     } finally {
       setGeneratingImg(false);
       setActiveEditorTab("");
@@ -134,7 +171,7 @@ const Customizer = () => {
                   <Tab
                     key={tab.name}
                     tab={tab}
-                    handleClick={() => setActiveEditorTab(tab.name)}
+                    handleClick={() => openEditorTab(tab.name)}
                   />
                 ))}
 

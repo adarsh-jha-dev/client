@@ -14,8 +14,9 @@ const AIPicker = ({ prompt, setPrompt, generatingImg, handleSubmit }) => {
       <div className="flex flex-wrap gap-3">
         {generatingImg ? (
           <CustomButton
+            disabled={true}
             type="outline"
-            title="Asking AI"
+            title="Asking AI..."
             customStyle="text-xs"
           />
         ) : (
