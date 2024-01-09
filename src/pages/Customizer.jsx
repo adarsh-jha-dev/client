@@ -91,7 +91,7 @@ const Customizer = () => {
       setGeneratingImg(true);
 
       const response = await fetch(
-        `${import.meta.env.HUGGING_FACE_BACKEND_URL}/api/v1/hf`,
+        `https://hugging-face-image-generation.onrender.com/api/v1/hf`,
         {
           method: "POST",
           headers: {
