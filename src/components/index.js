@@ -1,5 +1,5 @@
 import CustomButton from "./CustomButton";
-import AIPicker from "./AIPicker";
+import AIPicker from "./AIPicker.jsx";
 import FilePicker from "./FilePicker";
 import Tab from "./Tab";
 import ColorPicker from "./ColorPicker";
